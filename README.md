@@ -1,4 +1,5 @@
 # Storm Animation with Next.js & Framer Motion
+![Uploading image.png…]()
 
 A beautiful rain and thunderstorm animation built with Next.js, React, and Framer Motion.
 
