@@ -1,4 +1,4 @@
-// components/StormAnimation.tsx
+
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
@@ -28,7 +28,7 @@ interface SlideConfig {
   lightningChance: number;
 }
 
-// تعریف آرایه خارج از کامپوننت برای جلوگیری از تغییر رفرانس در هر رندر
+
 const SLIDE_CONFIGS: SlideConfig[] = [
   {
     title: "Peaceful Morning",
@@ -65,10 +65,9 @@ export default function StormAnimation() {
   const [flashOpacity, setFlashOpacity] = useState(0);
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // استفاده از متغیر محلی برای دسترسی سریع به کانفیگ فعلی
   const currentConfig = SLIDE_CONFIGS[currentSlide];
 
-  // ایجاد قطرات باران فقط در کلاینت
+  
   useEffect(() => {
     const drops: RainDrop[] = [];
     for (let i = 0; i < 120; i++) {
@@ -83,7 +82,7 @@ export default function StormAnimation() {
     setRainDrops(drops);
   }, []);
 
-  // تغییر اسلاید هر ۶ ثانیه
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % SLIDE_CONFIGS.length);
@@ -91,7 +90,7 @@ export default function StormAnimation() {
     return () => clearInterval(interval);
   }, []);
 
-  // منطق هوشمند رعد و برق
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
@@ -121,15 +120,15 @@ export default function StormAnimation() {
       }
     };
 
-    // پاکسازی اینتروال قبلی قبل از ست کردن جدید
+ 
     interval = setInterval(tryCreateLightning, currentConfig.lightningInterval);
     
     return () => clearInterval(interval);
-  }, [currentSlide]); // فقط به currentSlide وابسته است
+  }, [currentSlide]); 
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 transition-colors duration-1000">
-      {/* پس‌زمینه گرادیان داینامیک */}
+
       <motion.div
         className={`absolute inset-0 bg-gradient-to-b ${currentConfig.bgGradient}`}
         initial={{ opacity: 0 }}
@@ -137,13 +136,13 @@ export default function StormAnimation() {
         transition={{ duration: 1.5 }}
       />
 
-      {/* فلش نور رعد و برق */}
+      
       <motion.div
         className="absolute inset-0 bg-white mix-blend-overlay"
         style={{ opacity: flashOpacity }}
       />
 
-      {/* ابرها */}
+      
       <div className="absolute top-0 left-0 right-0 h-48">
         {[...Array(5)].map((_, i) => (
           <motion.div
@@ -170,7 +169,6 @@ export default function StormAnimation() {
         ))}
       </div>
 
-      {/* قطرات باران با رنگ داینامیک */}
       <AnimatePresence>
         {rainDrops.map((drop) => (
           <motion.div
@@ -203,7 +201,7 @@ export default function StormAnimation() {
         ))}
       </AnimatePresence>
 
-      {/* رعد و برق */}
+      
       <AnimatePresence>
         {lightning && (
           <motion.svg
@@ -244,7 +242,7 @@ export default function StormAnimation() {
         )}
       </AnimatePresence>
 
-      {/* متن اسلایدها */}
+      
       <div className="absolute inset-0 flex items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.div
@@ -271,7 +269,7 @@ export default function StormAnimation() {
         </AnimatePresence>
       </div>
 
-      {/* نشانگر اسلاید */}
+      
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3">
         {SLIDE_CONFIGS.map((_, index) => (
           <motion.div
@@ -289,34 +287,6 @@ export default function StormAnimation() {
           />
         ))}
       </div>
-
-      {/* Credit سازنده */}
-      <motion.div 
-        className="absolute bottom-4 right-4 animate-bounce md:bottom-6 md:right-6 z-20"
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1, duration: 0.8 }}
-      >
-        <div className={`group relative flex items-center gap-3 px-4 py-2 rounded-full backdrop-blur-md border transition-all duration-300 cursor-default ${
-          currentConfig.theme === 'day' 
-            ? 'bg-white/20 border-white/30 hover:bg-white/40' 
-            : 'bg-black/20 border-white/10 hover:bg-white/10'
-        }`}>
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-lg">
-            AM
-          </div>
-          <div className="flex flex-col">
-            <span className={`text-[10px] uppercase tracking-wider font-medium ${
-              currentConfig.theme === 'day' ? 'text-slate-600' : 'text-blue-200/60'
-            }`}>Created by</span>
-            <a href='https://amirresume.netlify.app/' className={`text-sm font-semibold transition-colors cursor-pointer ${
-              currentConfig.theme === 'day' ? 'text-slate-800 group-hover:text-blue-600' : 'text-white group-hover:text-blue-200'
-            }`}>
-              AmirAli Mohammadi
-            </a>
-          </div>
-        </div>
-      </motion.div>
     </div>
   );
 }
